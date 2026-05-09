@@ -1,0 +1,14 @@
+# Secrets (IMPORTANT: Keep your Supabase keys private)
+.env
+.env.local
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# System files
+.DS_Store
+Thumbs.db
