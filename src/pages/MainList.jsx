@@ -1,27 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import LevelCard from '../components/LevelCard';
 import { Loader2 } from 'lucide-react';
+import { fetchCinematicLevels } from '../lib/cinematicLevelsApi';
 
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-);
-
+/** Legacy page shape — main app routing uses App.jsx tabs. */
 export default function MainList({ onSelectLevel }) {
   const [levels, setLevels] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchLevels() {
-      const { data } = await supabase
-        .from('levels')
-        .select('*')
-        .order('position', { ascending: true });
-      if (data) setLevels(data);
-      setLoading(false);
-    }
-    fetchLevels();
+    let cancelled = false;
+    (async () => {
+      const data = await fetchCinematicLevels({});
+      if (!cancelled) {
+        setLevels(data);
+        setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   if (loading) {
@@ -46,11 +44,7 @@ export default function MainList({ onSelectLevel }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {levels.map((level) => (
-          <LevelCard 
-            key={level.id} 
-            level={level} 
-            onClick={() => onSelectLevel(level)} 
-          />
+          <LevelCard key={level.id} level={level} onClick={() => onSelectLevel?.(level)} />
         ))}
       </div>
     </div>
