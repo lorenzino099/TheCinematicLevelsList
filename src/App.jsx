@@ -27,9 +27,9 @@ export default function App() {
   const [levelsLayouts, setLevelsLayouts] = useState([]);
   const [packs, setPacks] = useState([]);
   const [creators, setCreators] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [pageByTab, setPageByTab] = useState({ main: 1, platformers: 1, layouts: 1 });
 
   useEffect(() => {
     let cancelled = false;
@@ -74,12 +74,18 @@ export default function App() {
     [levelsLayouts, searchQuery]
   );
 
+  useEffect(() => {
+    setPageByTab((p) => ({ ...p, [currentTab]: 1 }));
+  }, [currentTab, searchQuery]);
+
   if (loading) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="min-h-screen bg-[rgb(var(--bg))] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
-          <div className="w-16 h-16 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
-          <p className="text-zinc-500 font-black uppercase tracking-[0.3em] animate-pulse">Syncing Masterpieces...</p>
+          <div className="w-16 h-16 border-4 border-[rgb(var(--accent))] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[rgb(var(--muted))] font-black uppercase tracking-[0.3em] animate-pulse">
+            Syncing Masterpieces...
+          </p>
         </div>
       </div>
     );
@@ -93,6 +99,8 @@ export default function App() {
           levels={levelsMain}
           filteredLevels={filteredMain}
           onSelectLevel={setSelectedLevel}
+          page={pageByTab.main}
+          onPageChange={(page) => setPageByTab((p) => ({ ...p, main: page }))}
         />
       );
       break;
@@ -103,6 +111,8 @@ export default function App() {
           levels={levelsPlatformers}
           filteredLevels={filteredPlatformers}
           onSelectLevel={setSelectedLevel}
+          page={pageByTab.platformers}
+          onPageChange={(page) => setPageByTab((p) => ({ ...p, platformers: page }))}
         />
       );
       break;
@@ -113,6 +123,8 @@ export default function App() {
           levels={levelsLayouts}
           filteredLevels={filteredLayouts}
           onSelectLevel={setSelectedLevel}
+          page={pageByTab.layouts}
+          onPageChange={(page) => setPageByTab((p) => ({ ...p, layouts: page }))}
         />
       );
       break;
@@ -130,18 +142,16 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 pb-20 relative overflow-x-hidden">
+    <div className="min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--fg))] pb-20 relative overflow-x-hidden">
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-purple-900/10 rounded-full blur-[140px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[140px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[rgb(var(--accent)/0.10)] rounded-full blur-[140px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[rgb(var(--accent-2)/0.10)] rounded-full blur-[140px]" />
       </div>
 
       <div className="relative z-10">
         <Navbar
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
-          isAdmin={isAdmin}
-          setIsAdmin={setIsAdmin}
           currentTab={currentTab}
           onTabChange={setCurrentTab}
         />
@@ -163,15 +173,6 @@ export default function App() {
       {selectedLevel && (
         <LevelModal level={selectedLevel} onClose={() => setSelectedLevel(null)} />
       )}
-
-      <style>{`
-        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .animate-spin-slow { animation: spin-slow 8s linear infinite; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #09090b; }
-        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
-      `}</style>
     </div>
   );
 }
