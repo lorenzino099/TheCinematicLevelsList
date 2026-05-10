@@ -35,8 +35,6 @@ export default function FloatingPagination({
     if (safePage !== page) onPageChange(safePage);
   }, [safePage, page, onPageChange]);
 
-  if (totalPages <= 1) return null;
-
   React.useEffect(() => {
     const threshold = 260;
     let raf = 0;
@@ -57,6 +55,8 @@ export default function FloatingPagination({
       window.removeEventListener('scroll', onScroll);
     };
   }, []);
+
+  if (totalPages <= 1) return null;
 
   const items = getPageItems(safePage, totalPages);
   const canPrev = safePage > 1;
