@@ -7,6 +7,7 @@ import CategoryLevelsView from './views/CategoryLevelsView';
 import PacksView from './views/PacksView';
 import CreatorsView from './views/CreatorsView';
 import About from './pages/About';
+import GeometricBackdrop from './components/GeometricBackdrop';
 import { fetchCinematicLevels } from './lib/cinematicLevelsApi';
 import { fetchLevelPacks, fetchCreators } from './lib/cinematicExtrasApi';
 
@@ -143,6 +144,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--fg))] pb-20 relative overflow-x-hidden">
+      <GeometricBackdrop opacity={0.14} />
+
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[rgb(var(--accent)/0.10)] rounded-full blur-[140px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[rgb(var(--accent-2)/0.10)] rounded-full blur-[140px]" />

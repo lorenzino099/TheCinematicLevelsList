@@ -4,6 +4,40 @@ import LevelCard from '../components/LevelCard';
 import FloatingPagination from '../components/FloatingPagination';
 
 const PER_PAGE = 100;
+const PLAYLISTS = [
+  {
+    title: 'Cinematic Geometry Dash Levels',
+    url: 'https://www.youtube.com/playlist?list=PLKeMcFoghc691HVq-rM6j6aEpNCQNeUF_',
+  },
+  {
+    title: 'Iconic Diverse Geometry Dash Levels',
+    url: 'https://www.youtube.com/playlist?list=PLKeMcFoghc6-c-FTl1GSpTacWlrQDDLzQ',
+  },
+  {
+    title: 'Gameplay',
+    url: 'https://www.youtube.com/playlist?list=PLKeMcFoghc6-XhxO8pV9qX40oaWNUinlf',
+  },
+];
+
+function getEmbed(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    // YouTube playlist
+    if (u.hostname.includes('youtube.com') && u.searchParams.get('list')) {
+      const list = u.searchParams.get('list');
+      return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(list)}`;
+    }
+    // YouTube share link to playlist (rare)
+    if (u.hostname === 'youtu.be' && u.searchParams.get('list')) {
+      const list = u.searchParams.get('list');
+      return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(list)}`;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
 
 export default function MainRankingsView({ levels, filteredLevels, onSelectLevel, page, onPageChange }) {
   const total = filteredLevels.length;
@@ -51,6 +85,66 @@ export default function MainRankingsView({ levels, filteredLevels, onSelectLevel
             <br />
             Difficulty level is irrelevant; cinematic impact is everything.
           </p>
+        </div>
+
+        <div className="bg-gradient-to-br from-[rgb(var(--accent-2)/0.12)] to-[rgb(var(--card)/0.45)] border border-[rgb(var(--accent-2)/0.22)] p-8 rounded-[2rem] shadow-2xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[rgb(var(--accent-2)/0.07)] blur-3xl rounded-full -mr-10 -mt-10 group-hover:bg-[rgb(var(--accent-2)/0.12)] transition-colors" />
+          <h3 className="text-xs font-black text-[rgb(var(--fg))] uppercase tracking-widest mb-5 italic flex items-center gap-2">
+            <span className="w-2 h-2 bg-[rgb(var(--accent-2))] rounded-full animate-pulse" />
+            Playlists
+          </h3>
+          <p className="text-[rgb(var(--muted))] text-[13px] leading-relaxed font-medium">
+            A few of the playlists used while building the list—mood boards for pacing, atmosphere, and “camera”
+            rhythm.
+          </p>
+
+          <div className="mt-6 grid gap-4">
+            {PLAYLISTS.map((p) => {
+              const embed = getEmbed(p.url);
+              return (
+                <div
+                  key={p.title}
+                  className="rounded-[1.5rem] border border-[rgb(var(--border)/0.65)] bg-[rgb(var(--bg)/0.35)] overflow-hidden"
+                >
+                  <div className="px-5 py-4 flex items-center justify-between gap-4">
+                    <p className="text-[11px] font-black uppercase tracking-[0.35em] text-[rgb(var(--muted))] truncate">
+                      {p.title}
+                    </p>
+                    {p.url ? (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-[10px] font-black uppercase tracking-widest text-[rgb(var(--accent-2))] hover:underline"
+                      >
+                        Open
+                      </a>
+                    ) : null}
+                  </div>
+
+                  {embed ? (
+                    <div className="aspect-video bg-[rgb(var(--card-2))]">
+                      <iframe
+                        title={p.title}
+                        src={embed}
+                        className="w-full h-full"
+                        loading="lazy"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                      />
+                    </div>
+                  ) : (
+                    <div className="px-5 pb-5">
+                      <p className="text-[12px] text-[rgb(var(--muted-2))] leading-relaxed">
+                        Add a YouTube playlist link for an embed here. If it’s not embeddable, this card will stay as a
+                        simple link.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </aside>
 

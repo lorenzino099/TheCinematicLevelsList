@@ -9,9 +9,9 @@ export default function PacksView({ packs }) {
           <div className="p-3 rounded-2xl bg-[rgb(var(--accent)/0.14)] border border-[rgb(var(--accent)/0.25)]">
             <Layers className="text-[rgb(var(--accent))]" size={24} />
           </div>
-          <p className="text-[10px] font-black text-[rgb(var(--muted))] uppercase tracking-[0.35em]">Curated sets</p>
+          <p className="text-[10px] font-black text-[rgb(var(--muted))] uppercase tracking-[0.35em]">Curated collections</p>
         </div>
-        <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter text-[rgb(var(--fg))]">Level Packs</h2>
+        <h2 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter text-[rgb(var(--fg))]">Collections</h2>
         <p className="text-[rgb(var(--muted))] mt-4 text-lg leading-relaxed">
           Grouped cinematic experiences—sequels, shared soundtracks, and anthology arcs in one place.
         </p>

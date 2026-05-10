@@ -1,6 +1,6 @@
 import React from 'react';
+import cllLogo from '../../cll.png';
 import {
-  Eye,
   Search,
   List,
   Gamepad2,
@@ -18,7 +18,7 @@ const TABS = [
   { id: 'main', label: 'Main List', icon: List },
   { id: 'platformers', label: 'Platformers', icon: Gamepad2 },
   { id: 'layouts', label: 'Layouts', icon: PenTool },
-  { id: 'packs', label: 'Packs', icon: Layers },
+  { id: 'packs', label: 'Collections', icon: Layers },
   { id: 'creators', label: 'Creators', icon: Users },
   { id: 'about', label: 'About', icon: Info },
 ];
@@ -53,8 +53,14 @@ export default function Navbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="h-16 sm:h-20 flex items-center justify-between gap-4 relative">
           <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--accent))] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgb(var(--accent)/0.30)] transition-transform hover:rotate-3 hover:scale-105 shrink-0">
-              <Eye className="text-white" size={22} />
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--card)/0.35)] rounded-xl flex items-center justify-center shadow-[0_0_20px_rgb(var(--accent)/0.18)] transition-transform hover:rotate-2 hover:scale-[1.04] shrink-0 border border-[rgb(var(--border)/0.55)] overflow-hidden">
+              <img
+                src={cllLogo}
+                alt="CLL"
+                className="w-full h-full object-cover"
+                draggable="false"
+                decoding="async"
+              />
             </div>
             <div className="min-w-0">
               <h1 className="text-lg sm:text-2xl font-black italic tracking-tighter uppercase leading-none text-[rgb(var(--fg))] truncate">
